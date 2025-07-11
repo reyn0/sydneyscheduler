@@ -109,11 +109,99 @@
     ],
     "tomorrow": [
       {
-        "name": "Saturday's Roster will be available at 7pm",
-        "time": null
+        "name": "J Yumeno",
+        "time": "10 am - 10 pm"
+      },
+      {
+        "name": "T Naomi",
+        "time": "10 am - 5 pm"
+      },
+      {
+        "name": "T Marine",
+        "time": "10 am - 4 pm"
+      },
+      {
+        "name": "K Pink",
+        "time": "10 am - 8 pm"
+      },
+      {
+        "name": "V Saka",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "V Ruby",
+        "time": "10 am - 12 am"
+      },
+      {
+        "name": "J Hinata",
+        "time": "10 am - 10 pm"
+      },
+      {
+        "name": "J Rei",
+        "time": "10 am - 10 pm"
+      },
+      {
+        "name": "C Morgan",
+        "time": "12 pm - 12 am"
+      },
+      {
+        "name": "M Celine",
+        "time": "12 pm - 12 am"
+      },
+      {
+        "name": "V Mia",
+        "time": "12 pm - 3 am"
+      },
+      {
+        "name": "C Jay",
+        "time": "12 pm - 12 am"
+      },
+      {
+        "name": "C Iris",
+        "time": "12 pm - 10 pm"
+      },
+      {
+        "name": "J Chino",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "J Kaori",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "J Renee",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "First Day- Hoshino",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "T Anna",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "NZBK Jess",
+        "time": "3 pm - 6 pm"
+      },
+      {
+        "name": "T Nadia",
+        "time": "5 pm - 12 am"
+      },
+      {
+        "name": "J Seina",
+        "time": "5 pm - 12 am"
+      },
+      {
+        "name": "Indo Hazel",
+        "time": "6 pm - 3 am"
+      },
+      {
+        "name": "C Killy",
+        "time": "7 pm - 3 am"
       }
     ],
-    "timestamp": "2025-07-11T18:12:38.616589"
+    "timestamp": "2025-07-11T21:23:04.098122"
   },
   "ginza": {
     "title": "Cleveland",
@@ -160,7 +248,7 @@
         ]
       }
     ],
-    "timestamp": "2025-07-11T18:12:49.481744"
+    "timestamp": "2025-07-11T21:23:14.447920"
   },
   "ginza479": {
     "title": "Elizabeth",
@@ -184,6 +272,7 @@
       {
         "title": "Empire Diamond Class",
         "names": [
+          "K Jessica 6pm-4am",
           "K Jane 6pm-4am",
           "J Jasmine 10:30am-9pm",
           "J Tomiko 10:30am-9pm",
@@ -195,6 +284,6 @@
         ]
       }
     ],
-    "timestamp": "2025-07-11T18:12:59.962216"
+    "timestamp": "2025-07-11T21:23:24.377746"
   }
 }
