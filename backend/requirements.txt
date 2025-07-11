@@ -5,3 +5,4 @@ beautifulsoup4
 pydantic
 selenium
 webdriver_manager
+pytz
