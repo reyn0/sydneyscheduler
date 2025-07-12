@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
 function parseNameTime(entry) {
   let code = "";
@@ -60,38 +60,173 @@ function parseNameTime(entry) {
 }
 
 function RosterTable({ entries }) {
+  const [filter, setFilter] = useState("");
+  const [sortField, setSortField] = useState("name");
+  const [sortDirection, setSortDirection] = useState("asc");
+
+  // Parse all entries first
+  const parsedEntries = useMemo(() => {
+    if (!entries || entries.length === 0) return [];
+    return entries.map((entry, idx) => ({
+      ...parseNameTime(entry),
+      originalIndex: idx,
+      originalEntry: entry
+    }));
+  }, [entries]);
+
+  // Filter entries based on search term
+  const filteredEntries = useMemo(() => {
+    if (!filter.trim()) return parsedEntries;
+    
+    const searchTerm = filter.toLowerCase().trim();
+    return parsedEntries.filter(entry => 
+      entry.code.toLowerCase().includes(searchTerm) ||
+      entry.name.toLowerCase().includes(searchTerm) ||
+      entry.start.toLowerCase().includes(searchTerm) ||
+      entry.finish.toLowerCase().includes(searchTerm)
+    );
+  }, [parsedEntries, filter]);
+
+  // Sort entries
+  const sortedEntries = useMemo(() => {
+    const sorted = [...filteredEntries];
+    
+    sorted.sort((a, b) => {
+      let aValue = a[sortField] || "";
+      let bValue = b[sortField] || "";
+      
+      // Special handling for time sorting
+      if (sortField === "start" || sortField === "finish") {
+        // Convert time to 24-hour format for proper sorting
+        const timeToMinutes = (timeStr) => {
+          if (!timeStr) return 0;
+          const match = timeStr.match(/(\d{1,2})(?:[:.:](\d{2}))?\s*([ap])m/i);
+          if (!match) return 0;
+          
+          let hours = parseInt(match[1]);
+          const minutes = parseInt(match[2] || "0");
+          const period = match[3].toLowerCase();
+          
+          if (period === 'p' && hours !== 12) hours += 12;
+          if (period === 'a' && hours === 12) hours = 0;
+          
+          return hours * 60 + minutes;
+        };
+        
+        aValue = timeToMinutes(aValue);
+        bValue = timeToMinutes(bValue);
+      }
+      
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+    
+    return sorted;
+  }, [filteredEntries, sortField, sortDirection]);
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortIcon = (field) => {
+    if (sortField !== field) return "↕️";
+    return sortDirection === "asc" ? "↑" : "↓";
+  };
+
+  const clearFilter = () => {
+    setFilter("");
+  };
+
   return (
-    <table className="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Start</th>
-          <th>Finish</th>
-        </tr>
-      </thead>
-      <tbody>
-        {entries && entries.length > 0 ? (
-          entries.map((entry, idx) => {
-            const { code, name, start, finish } = parseNameTime(entry);
-            return (
-              <tr key={idx}>
-                <td>{code}</td>
-                <td>{name}</td>
-                <td>{start}</td>
-                <td>{finish}</td>
-              </tr>
-            );
-          })
-        ) : (
+    <div>
+      {/* Filter Controls */}
+      <div className="row mb-3">
+        <div className="col-md-8">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by name, code, or time..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+            <button 
+              className="btn btn-outline-secondary" 
+              type="button" 
+              onClick={clearFilter}
+              disabled={!filter.trim()}
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+        <div className="col-md-4 d-flex align-items-center">
+          <small className="text-muted">
+            Showing {sortedEntries.length} of {parsedEntries.length} entries
+          </small>
+        </div>
+      </div>
+
+      {/* Table */}
+      <table className="table table-bordered table-striped">
+        <thead>
           <tr>
-            <td colSpan={4} className="text-center">
-              No data
-            </td>
+            <th 
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => handleSort("code")}
+              className={sortField === "code" ? "table-active" : ""}
+            >
+              Code {getSortIcon("code")}
+            </th>
+            <th 
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => handleSort("name")}
+              className={sortField === "name" ? "table-active" : ""}
+            >
+              Name {getSortIcon("name")}
+            </th>
+            <th 
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => handleSort("start")}
+              className={sortField === "start" ? "table-active" : ""}
+            >
+              Start {getSortIcon("start")}
+            </th>
+            <th 
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => handleSort("finish")}
+              className={sortField === "finish" ? "table-active" : ""}
+            >
+              Finish {getSortIcon("finish")}
+            </th>
           </tr>
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {sortedEntries.length > 0 ? (
+            sortedEntries.map((entry, idx) => (
+              <tr key={entry.originalIndex}>
+                <td>{entry.code}</td>
+                <td>{entry.name}</td>
+                <td>{entry.start}</td>
+                <td>{entry.finish}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4} className="text-center">
+                {filter.trim() ? "No entries match your search" : "No data"}
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

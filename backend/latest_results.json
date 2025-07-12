@@ -7,24 +7,8 @@
         "time": "10 am - 4 pm"
       },
       {
-        "name": "J Rei",
-        "time": "10 am - 10 pm"
-      },
-      {
-        "name": "T Naomi",
-        "time": "10 am - 5 pm"
-      },
-      {
-        "name": "J Hinata",
-        "time": "10 am - 10 pm"
-      },
-      {
         "name": "J Yumeno",
         "time": "10 am - 10 pm"
-      },
-      {
-        "name": "Tw Leah",
-        "time": "10 am - 5 pm"
       },
       {
         "name": "V Ruby",
@@ -35,98 +19,8 @@
         "time": "10 am - 8 pm"
       },
       {
-        "name": "K IU",
-        "time": "10 am - 6 pm"
-      },
-      {
         "name": "V Saka",
         "time": "10 am - 6 pm"
-      },
-      {
-        "name": "T Cindy",
-        "time": "10 am - 6 pm"
-      },
-      {
-        "name": "C Jay",
-        "time": "12 pm - 12 am"
-      },
-      {
-        "name": "NZBK Jess",
-        "time": "12 pm - 3 pm"
-      },
-      {
-        "name": "T Patty",
-        "time": "12 pm - 6 pm"
-      },
-      {
-        "name": "V Mia",
-        "time": "12 pm - 3 am"
-      },
-      {
-        "name": "C Lilith",
-        "time": "2 pm - 12 am"
-      },
-      {
-        "name": "J Chino",
-        "time": "3 pm - 3 am"
-      },
-      {
-        "name": "J Renee",
-        "time": "3 pm - 3 am"
-      },
-      {
-        "name": "T Anna",
-        "time": "3 pm - 3 am"
-      },
-      {
-        "name": "J Samantha",
-        "time": "3 pm - 3 am"
-      },
-      {
-        "name": "J Kaori",
-        "time": "3 pm - 3 am"
-      },
-      {
-        "name": "First Day- Hoshino",
-        "time": "5 pm - 3 am"
-      },
-      {
-        "name": "T Nadia",
-        "time": "5 pm - 12 am"
-      },
-      {
-        "name": "J Seina",
-        "time": "5 pm - 12 am"
-      },
-      {
-        "name": "Indo Hazel",
-        "time": "6 pm - 3 am"
-      },
-      {
-        "name": "C Killy",
-        "time": "7 pm - 3 am"
-      }
-    ],
-    "tomorrow": [
-      {
-        "name": "J Yumeno",
-        "time": "10 am - 10 pm"
-      },
-      {
-        "name": "T Marine",
-        "time": "10 am - 4 pm"
-      },
-      {
-        "name": "K Pink",
-        "time": "10 am - 8 pm"
-      },
-      {
-        "name": "V Saka",
-        "time": "10 am - 6 pm"
-      },
-      {
-        "name": "V Ruby",
-        "time": "10 am - 12 am"
       },
       {
         "name": "J Hinata",
@@ -145,11 +39,11 @@
         "time": "12 pm - 12 am"
       },
       {
-        "name": "C Jay",
+        "name": "M Celine",
         "time": "12 pm - 12 am"
       },
       {
-        "name": "M Celine",
+        "name": "C Jay",
         "time": "12 pm - 12 am"
       },
       {
@@ -161,7 +55,109 @@
         "time": "3 pm - 3 am"
       },
       {
+        "name": "First Day- Hoshino",
+        "time": "3 pm - 3 am"
+      },
+      {
         "name": "J Kaori",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "NZBK Jess",
+        "time": "3 pm - 6 pm"
+      },
+      {
+        "name": "J Renee",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "First Day- Kureha",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "J Seina",
+        "time": "5 pm - 12 am"
+      },
+      {
+        "name": "First Day- Azusa",
+        "time": "5 pm - 3 am"
+      },
+      {
+        "name": "First Day- Reicia",
+        "time": "5 pm - 3 am"
+      },
+      {
+        "name": "T Nadia",
+        "time": "5 pm - 12 am"
+      },
+      {
+        "name": "Indo Hazel",
+        "time": "6 pm - 3 am"
+      }
+    ],
+    "tomorrow": [
+      {
+        "name": "V Miu Miu",
+        "time": "10 am - 5 pm"
+      },
+      {
+        "name": "First Day- Reicia",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "First Day- Azusa",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "J Rei",
+        "time": "10 am - 10 pm"
+      },
+      {
+        "name": "J Hinata",
+        "time": "10 am - 10 pm"
+      },
+      {
+        "name": "K Uee",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "Tw Leah",
+        "time": "10 am - 5 pm"
+      },
+      {
+        "name": "V Ruby",
+        "time": "10 am - 12 am"
+      },
+      {
+        "name": "K IU",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "V Saka",
+        "time": "10 am - 6 pm"
+      },
+      {
+        "name": "V Molly",
+        "time": "12 pm - 12 am"
+      },
+      {
+        "name": "V Mia",
+        "time": "12 pm - 3 am"
+      },
+      {
+        "name": "C Morgan",
+        "time": "12 pm - 6 pm"
+      },
+      {
+        "name": "J Samantha",
+        "time": "3 pm - 3 am"
+      },
+      {
+        "name": "M Celine",
+        "time": "3 pm - 10 pm"
+      },
+      {
+        "name": "First Day- Kureha",
         "time": "3 pm - 3 am"
       },
       {
@@ -173,16 +169,12 @@
         "time": "3 pm - 3 am"
       },
       {
-        "name": "T Anna",
+        "name": "J Kaori",
         "time": "3 pm - 3 am"
       },
       {
-        "name": "NZBK Jess",
-        "time": "3 pm - 6 pm"
-      },
-      {
-        "name": "T Nadia",
-        "time": "5 pm - 12 am"
+        "name": "J Chino",
+        "time": "3 pm - 3 am"
       },
       {
         "name": "J Seina",
@@ -191,13 +183,9 @@
       {
         "name": "Indo Hazel",
         "time": "6 pm - 3 am"
-      },
-      {
-        "name": "C Killy",
-        "time": "7 pm - 3 am"
       }
     ],
-    "timestamp": "2025-07-12T00:07:54.245602+10:00"
+    "timestamp": "2025-07-12T22:00:44.719436+10:00"
   },
   "ginza": {
     "title": "Cleveland",
@@ -205,39 +193,8 @@
       {
         "title": "Amazing",
         "names": [
-          "J Miumiu 12pm-2am",
-          "J Cora 12pm-2am",
-          "J Momoka 12pm-2am",
-          "J Hanae 12pm-2am",
-          "J Seto 10.30am-2am",
-          "J Mei 10.30am-2am",
-          "Jav Kiho Osaka 12pm-2am",
-          "K Mix J Mirai 12pm-2am",
-          "French Lola 10.30am-6pm",
-          "K Julia 10.30am-6pm",
-          "K Bella 10.30am-6pm",
-          "K Misha 10.30am-6pm",
-          "V Mix C Angela 10:30am-9pm",
-          "J Yumi 10.30am-12am",
-          "J Tomo 10.30am-2am",
-          "J Amelia 12pm-2am",
-          "J Mix Russian Amber 6pm-2am",
-          "K Choo 10:30am-6pm",
-          "C Cindy 10.30am-11pm",
-          "J Miumiu 12pm -2am",
-          "J Cora 12pm -2am",
-          "J Momoka 12pm -2am",
-          "J Hanae 12pm -2am",
-          "J Seto 10.30am -2am",
-          "J Mei 10.30am -2am",
-          "Jav Kiho Osaka 12pm -2am",
-          "K Mix J Mirai 12pm -2am",
-          "J Tomo 10.30am -2am"
-        ]
-      },
-      {
-        "title": "Amazing",
-        "names": [
+          "J Orange 7pm-2am",
+          "J Rika 12pm-2am",
           "J Judie 6pm-2am",
           "J Miumiu 12pm-2am",
           "J Cora 10.30am-2am",
@@ -256,6 +213,8 @@
           "K Choo 10:30am-6pm",
           "C Cindy 10.30am-11pm",
           "K Juju 4pm-2am",
+          "J Orange 7pm -2am",
+          "J Rika 12pm -2am",
           "J Judie 6pm -2am",
           "J Miumiu 12pm -2am",
           "J Cora 10.30am -2am",
@@ -267,9 +226,40 @@
           "K Mix J Mirai 12pm -2am",
           "J Tomo 10.30am -2am"
         ]
+      },
+      {
+        "title": "Amazing",
+        "names": [
+          "J Orange 10.30am-2am",
+          "J Waka 12pm-2am",
+          "J Rika 10.30am-2am",
+          "J Judie 10.30am-7pm",
+          "J Cora 10.30am-2am",
+          "Jav Kiho Osaka 12pm-2am",
+          "J Seto 12pm-2am",
+          "J Mei 10.30am-2am",
+          "K Mix J Mirai 12pm-2am",
+          "J Yumi 10.30am-12am",
+          "J Tomo 10.30am-2am",
+          "K Choo 10:30am-6pm",
+          "V Mix C Angela 10:30am-9pm",
+          "C Cindy 10.30am-11pm",
+          "K Juju 4pm-2am",
+          "J Orange 10.30am -2am",
+          "J Waka 12pm -2am",
+          "J Rika 10.30am -2am",
+          "J Judie 10.30am -7pm",
+          "J Cora 10.30am -2am",
+          "Jav Kiho Osaka 12pm -2am",
+          "J Seto 12pm -2am",
+          "J Mei 10.30am -2am",
+          "K Mix J Mirai 12pm -2am",
+          "Spanish Mix Paris 10.30am-7pm",
+          "J Tomo 10.30am -2am"
+        ]
       }
     ],
-    "timestamp": "2025-07-12T00:08:04.391449+10:00"
+    "timestamp": "2025-07-12T22:00:54.945562+10:00"
   },
   "ginza479": {
     "title": "Elizabeth",
@@ -277,69 +267,60 @@
       {
         "title": "Empire Diamond Class",
         "names": [
-          "V Fiona 1pm-4am",
+          "V Fiona 6pm-4am",
           "J Kitty 12pm-4am",
-          "J Amo 12pm-2am",
+          "J Amo 10:30am-12am",
           "J Huka 10:30am-3am",
-          "J Dolly 10:30am-2am",
+          "K Mini 10:30am-9pm",
           "J Moon 10:30am-4am",
           "J Yuan 10:30am-4am",
           "J Nene 10:30am-2am",
-          "J Scotch 10:30am-8pm",
-          "French Lea 10:30am-6pm",
-          "K Stella 10:30am-6pm",
-          "K Zoe 10:30am-9pm",
-          "K Nana 10:30am-10pm",
+          "K Nana 10:30am-6pm",
+          "K Jessica 1pm-4am",
+          "K Jane 6pm-4am",
           "J Jasmine 10:30am-9pm",
           "J Tomiko 10:30am-9pm",
           "J Soda 10:30am-2am",
-          "J Mugi 10:30am-2am (No Indian)",
+          "J Mugi 10:30am-2am",
           "J Hibiki 10:30am-4am",
-          "J Sono 12pm-2am",
+          "J Kaho 12pm-2am",
+          "J Sono 10.30am-2am",
           "J Maru 12pm-2am",
-          "J Kaho 6pm-4am",
+          "J Waka 12pm-3am",
           "C Cici 10:30am-2am",
           "Cx Russian Venus 12pm-2am",
           "T Darin 10:30am-12am",
-          "V Mia 12pm-2am",
           "ABV Dior 1pm-7pm",
-          "ABJ Jade 8pm-2am",
           "Malay Abby 10:30am-8:30pm"
         ]
       },
       {
         "title": "Empire Diamond Class",
         "names": [
-          "V Fiona 1pm-4am",
           "J Kitty 12pm-4am",
           "J Amo 10:30am-12am",
           "J Huka 10:30am-3am",
-          "J Dolly 10:30am-2am",
-          "K Mini 10:30am-9pm",
-          "J Moon 10:30am-4am",
-          "J Yuan 10:30am-4am",
+          "K Mini 10:30am-6pm",
+          "J Moon 2pm-4am",
+          "J Yuan 2pm-4am",
           "J Nene 10:30am-2am",
-          "K Nana 10:30am-6pm",
-          "K Jessica 6pm-4am",
+          "K Jessica 10:30am-6pm",
+          "K Nana 10:30am-10pm",
           "K Jane 6pm-4am",
           "J Jasmine 10:30am-9pm",
-          "J Tomiko 10:30am-9pm",
           "J Soda 10:30am-2am",
-          "J Mugi 10:30am-2am (No Indian)",
           "J Hibiki 10:30am-4am",
           "J Kaho 12pm-2am",
           "J Sono 12pm-2am",
           "J Maru 12pm-2am",
-          "J Waka 12pm-3am",
-          "J Rika 12pm-4am",
           "C Cici 10:30am-2am",
           "Cx Russian Venus 12pm-2am",
-          "T Darin 10:30am-12am",
+          "V Mia 12pm-2am",
           "ABV Dior 1pm-7pm",
           "Malay Abby 10:30am-8:30pm"
         ]
       }
     ],
-    "timestamp": "2025-07-12T00:08:15.784840+10:00"
+    "timestamp": "2025-07-12T22:01:06.145330+10:00"
   }
 }
