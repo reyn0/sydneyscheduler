@@ -95,7 +95,7 @@ def extract_ginza_roster():
                     # "10.30a m -12am" -> "10.30am-12am"
                     cleaned = re.sub(r'(\d+\.?\d*)a\s+m\s*-', r'\1am-', cleaned)
                     cleaned = re.sub(r'(\d+\.?\d*)p\s+m\s*-', r'\1pm-', cleaned)
-                    # Remove extra spaces between time components
+                    # Remove extra spaces between time components and normalize spacing
                     cleaned = re.sub(r'(\d+\.?\d*[ap]m)\s*-\s*(\d+\.?\d*[ap]m)', r'\1-\2', cleaned)
                     
                     names.append(cleaned)
@@ -244,6 +244,9 @@ def extract_ginza_roster():
                     name_part = re.sub(r'\(PHOTO\)|\bDiamond\s+Class\b|\bNew\b', '', name_part, flags=re.IGNORECASE)
                     name_part = re.sub(r'\s+', ' ', name_part).strip()
                     
+                    # Normalize time format (remove spaces around dash) BEFORE adding to final_names
+                    time_part = re.sub(r'(\d+\.?\d*[ap]m)\s*-\s*(\d+\.?\d*[ap]m)', r'\1-\2', time_part, flags=re.IGNORECASE)
+                    
                     # Combine clean name and time
                     cleaned = f"{name_part} {time_part}"
                     final_names.append(cleaned)
@@ -252,12 +255,39 @@ def extract_ginza_roster():
                     cleaned = re.sub(r'\(PHOTO\)|\bDiamond\s+Class\b|\bNew\b', '', entry, flags=re.IGNORECASE)
                     # Remove content after time pattern that looks like extra info
                     cleaned = re.sub(r'(\d{1,2}(?:[:\.]\d{2})? ?[ap]m)\s*[^\w]*.*$', r'\1', cleaned, flags=re.IGNORECASE)
+                    # Normalize time spacing BEFORE adding to final_names
+                    cleaned = re.sub(r'(\d+\.?\d*[ap]m)\s*-\s*(\d+\.?\d*[ap]m)', r'\1-\2', cleaned, flags=re.IGNORECASE)
                     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
                     final_names.append(cleaned)
+
+        # Final deduplication step - remove exact duplicates that may have slipped through
+        final_names = list(dict.fromkeys(final_names))  # Preserves order while removing duplicates
         results.append({
             'title': title or 'Ginza Roster',
             'names': final_names
         })
+    
+    # Final cross-roster deduplication: if same person appears in multiple rosters,
+    # keep the one with more recent/different time, or just the first unique occurrence
+    all_final_names = []
+    seen_normalized = set()  # Track by normalized format to avoid spacing duplicates
+    
+    for roster in results:
+        for name in roster['names']:
+            # Normalize the entry before checking for duplicates
+            normalized_name = re.sub(r'(\d+\.?\d*[ap]m)\s*-\s*(\d+\.?\d*[ap]m)', r'\1-\2', name, flags=re.IGNORECASE)
+            
+            # If we haven't seen this normalized entry yet, add it
+            if normalized_name not in seen_normalized:
+                all_final_names.append(normalized_name)
+                seen_normalized.add(normalized_name)
+    
+    # Update results with deduplicated names
+    if results:
+        results[0]['names'] = all_final_names
+        # Remove other rosters since we've merged them
+        results = [results[0]]
+    
     return {
         'title': 'Cleveland',
         'rosters': results,
