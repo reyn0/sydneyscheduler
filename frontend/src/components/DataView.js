@@ -61,7 +61,7 @@ function parseNameTime(entry) {
 
 function RosterTable({ entries }) {
   const [filter, setFilter] = useState("");
-  const [sortField, setSortField] = useState("name");
+  const [sortField, setSortField] = useState("start");
   const [sortDirection, setSortDirection] = useState("asc");
 
   // Parse all entries first
@@ -90,6 +90,16 @@ function RosterTable({ entries }) {
   // Sort entries
   const sortedEntries = useMemo(() => {
     const sorted = [...filteredEntries];
+    
+    // If sortField is "original", preserve the original backend order
+    if (sortField === "original") {
+      sorted.sort((a, b) => {
+        return sortDirection === "asc" ? 
+          a.originalIndex - b.originalIndex : 
+          b.originalIndex - a.originalIndex;
+      });
+      return sorted;
+    }
     
     sorted.sort((a, b) => {
       let aValue = a[sortField] || "";
@@ -143,6 +153,11 @@ function RosterTable({ entries }) {
     setFilter("");
   };
 
+  const resetToOriginalOrder = () => {
+    setSortField("original");
+    setSortDirection("asc");
+  };
+
   return (
     <div>
       {/* Filter Controls */}
@@ -164,11 +179,22 @@ function RosterTable({ entries }) {
             >
               Clear
             </button>
+            <button 
+              className="btn btn-outline-primary" 
+              type="button" 
+              onClick={resetToOriginalOrder}
+              disabled={sortField === "original"}
+              title="Reset to original backend order"
+            >
+              Original Order
+            </button>
           </div>
         </div>
         <div className="col-md-4 d-flex align-items-center">
           <small className="text-muted">
             Showing {sortedEntries.length} of {parsedEntries.length} entries
+            {sortField === "original" && " (original order)"}
+            {sortField !== "original" && ` (sorted by ${sortField})`}
           </small>
         </div>
       </div>
@@ -226,6 +252,14 @@ function RosterTable({ entries }) {
           )}
         </tbody>
       </table>
+      
+      {/* Disclaimer */}
+      <div className="mt-2">
+        <small className="text-muted fst-italic">
+          ⚠️ This may not be 100% accurate and may have added or missing persons. 
+          Please go to the original website to verify the real roster.
+        </small>
+      </div>
     </div>
   );
 }
