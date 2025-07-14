@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import DataView from "./components/DataView";
 import ScrapeStarter from "./components/ScrapeStarter";
 import { fetchScrapedData } from "./api";
+import { initGA, trackPageView, trackCoffeeClick } from "./utils/analytics";
 
 // Simple Buy Me a Coffee Button Component
 function BuyMeACoffeeButton() {
+  const handleClick = () => {
+    trackCoffeeClick();
+  };
+
   return (
     <a
       href="https://www.buymeacoffee.com/sydneyscheduler"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={handleClick}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -40,10 +46,26 @@ function BuyMeACoffeeButton() {
   );
 }
 
+// Component to track page views
+function Analytics() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search, document.title);
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Initialize Google Analytics on app load
+  useEffect(() => {
+    initGA();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +84,7 @@ function App() {
 
   return (
     <Router>
+      <Analytics />
       <div className="container mt-4">
         {/* Header with title and coffee button */}
         <header className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">

@@ -267,30 +267,15 @@ def extract_ginza_roster():
             'names': final_names
         })
     
-    # Final cross-roster deduplication: if same person appears in multiple rosters,
-    # keep the one with more recent/different time, or just the first unique occurrence
-    all_final_names = []
-    seen_normalized = set()  # Track by normalized format to avoid spacing duplicates
-    
+    # Don't merge rosters - keep them separate for today/tomorrow
+    # Just do final deduplication within each roster
     for roster in results:
-        for name in roster['names']:
-            # Normalize the entry before checking for duplicates
-            normalized_name = re.sub(r'(\d+\.?\d*[ap]m)\s*-\s*(\d+\.?\d*[ap]m)', r'\1-\2', name, flags=re.IGNORECASE)
-            
-            # If we haven't seen this normalized entry yet, add it
-            if normalized_name not in seen_normalized:
-                all_final_names.append(normalized_name)
-                seen_normalized.add(normalized_name)
-    
-    # Update results with deduplicated names
-    if results:
-        results[0]['names'] = all_final_names
-        # Remove other rosters since we've merged them
-        results = [results[0]]
+        # Remove exact duplicates within this roster only
+        roster['names'] = list(dict.fromkeys(roster['names']))
     
     return {
         'title': 'Cleveland',
-        'rosters': results,
+        'rosters': results,  # Keep all separate roster blocks
         'timestamp': now_sydney_iso()
     }
 

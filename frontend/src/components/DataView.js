@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { trackSearch, trackSort, trackRosterView, trackFilter } from "../utils/analytics";
 
 function parseNameTime(entry) {
   let code = "";
@@ -136,6 +137,9 @@ function RosterTable({ entries }) {
   }, [filteredEntries, sortField, sortDirection]);
 
   const handleSort = (field) => {
+    // Track sort action
+    trackSort(field);
+    
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -151,11 +155,27 @@ function RosterTable({ entries }) {
 
   const clearFilter = () => {
     setFilter("");
+    trackFilter("clear", "");
   };
 
   const resetToOriginalOrder = () => {
     setSortField("original");
     setSortDirection("asc");
+    trackSort("original_order");
+  };
+
+  // Track search with debounce
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setFilter(value);
+    
+    // Simple debounce - only track after user stops typing for 500ms
+    clearTimeout(window.searchTimeout);
+    window.searchTimeout = setTimeout(() => {
+      if (value.trim()) {
+        trackSearch(value.trim());
+      }
+    }, 500);
   };
 
   return (
@@ -169,7 +189,7 @@ function RosterTable({ entries }) {
               className="form-control"
               placeholder="Search by name, code, or time..."
               value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={handleSearchChange}
             />
             <button 
               className="btn btn-outline-secondary" 
@@ -267,6 +287,12 @@ function RosterTable({ entries }) {
 function No5Roster({ site, lastUpdated }) {
   const [tab, setTab] = useState("today");
   const { today, tomorrow, title } = site;
+  
+  const handleTabChange = (newTab) => {
+    setTab(newTab);
+    trackRosterView(`${title}-${newTab}`);
+  };
+  
   // Determine the date string from lastUpdated
   let dateStr = lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "";
   let tomorrowDateStr = lastUpdated ? new Date(Date.parse(lastUpdated) + 24*60*60*1000).toLocaleDateString() : "";
@@ -275,7 +301,7 @@ function No5Roster({ site, lastUpdated }) {
       <h2 style={{ color: "#1976d2" }}>{title}</h2>
       <div style={{ marginBottom: 16 }}>
         <button
-          onClick={() => setTab("today")}
+          onClick={() => handleTabChange("today")}
           className={`btn btn-sm ${
             tab === "today" ? "btn-primary" : "btn-outline-primary"
           }`}
@@ -284,7 +310,7 @@ function No5Roster({ site, lastUpdated }) {
           Today's Roster{dateStr && ` (${dateStr})`}
         </button>
         <button
-          onClick={() => setTab("tomorrow")}
+          onClick={() => handleTabChange("tomorrow")}
           className={`btn btn-sm ${
             tab === "tomorrow" ? "btn-primary" : "btn-outline-primary"
           }`}
@@ -300,6 +326,12 @@ function No5Roster({ site, lastUpdated }) {
 function GinzaRoster({ site, lastUpdated }) {
   const { rosters, title } = site;
   const [tab, setTab] = useState("today");
+  
+  const handleTabChange = (newTab) => {
+    setTab(newTab);
+    trackRosterView(`${title}-${newTab}`);
+  };
+  
   const todayBlock = rosters && rosters.length > 0 ? rosters[0] : null;
   const tomorrowBlock = rosters && rosters.length > 1 ? rosters[1] : null;
   let dateStr = lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "";
@@ -309,7 +341,7 @@ function GinzaRoster({ site, lastUpdated }) {
       <h2 style={{ color: "#1976d2" }}>{title}</h2>
       <div style={{ marginBottom: 16 }}>
         <button
-          onClick={() => setTab("today")}
+          onClick={() => handleTabChange("today")}
           className={`btn btn-sm ${
             tab === "today" ? "btn-primary" : "btn-outline-primary"
           }`}
@@ -318,7 +350,7 @@ function GinzaRoster({ site, lastUpdated }) {
           Today's Roster{dateStr && ` (${dateStr})`}
         </button>
         <button
-          onClick={() => setTab("tomorrow")}
+          onClick={() => handleTabChange("tomorrow")}
           className={`btn btn-sm ${
             tab === "tomorrow" ? "btn-primary" : "btn-outline-primary"
           }`}

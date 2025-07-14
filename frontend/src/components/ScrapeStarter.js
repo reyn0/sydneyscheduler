@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { trackScrapeRequest } from "../utils/analytics";
 
 function ScrapeStarter() {
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,10 @@ function ScrapeStarter() {
   const handleStartScrape = async () => {
     setLoading(true);
     setMessage("");
+    
+    // Track scrape request
+    trackScrapeRequest();
+    
     try {
       await axios.get("/scrape");
       setMessage("Scraping finished! The results page now shows the latest data.");
