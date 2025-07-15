@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import DataView from "./components/DataView";
 import ScrapeStarter from "./components/ScrapeStarter";
 import { fetchScrapedData } from "./api";
-import { initGA, trackPageView, trackCoffeeClick } from "./utils/analytics";
+import { initGA, trackPageView, trackCoffeeClick, testAnalytics } from "./utils/analytics";
 
 // Simple Buy Me a Coffee Button Component
 function BuyMeACoffeeButton() {
@@ -65,6 +65,10 @@ function App() {
   // Initialize Google Analytics on app load
   useEffect(() => {
     initGA();
+    
+    // Add test function to window for easy debugging
+    window.testAnalytics = testAnalytics;
+    console.log('Analytics test function available: window.testAnalytics()');
   }, []);
 
   useEffect(() => {
