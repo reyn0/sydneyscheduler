@@ -29,11 +29,18 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 
-# Environment files (keep these secure)
+# Environment files (keep these secure - NEVER commit real IDs)
 .env
 .env.local
 .env.production
 .env.staging
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Google Analytics - keep template in repo, real ID in .env only
+# analytics.js stays in repo with template ID
+# Real GA ID goes in .env file (which is ignored above)
 
 # IDE files
 .vscode/

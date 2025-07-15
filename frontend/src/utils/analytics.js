@@ -1,5 +1,13 @@
-// Replace with your actual Google Analytics 4 Measurement ID
-// Get this from Google Analytics dashboard (looks like G-XXXXXXXXXX)
+// Google Analytics 4 Integration
+// SECURITY: Never commit your real GA4 Measurement ID to GitHub!
+// This file uses environment variables to keep your GA ID secure.
+// 
+// Setup:
+// 1. Keep this file in GitHub with template ID (G-XXXXXXXXXX)
+// 2. Put your real GA ID in .env file: REACT_APP_GA_MEASUREMENT_ID=G-YOUR-REAL-ID
+// 3. The .env file is gitignored and won't be committed
+//
+// Get your GA4 Measurement ID from: https://analytics.google.com/
 const GA_MEASUREMENT_ID = process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
 
 // Initialize dataLayer and gtag function immediately
