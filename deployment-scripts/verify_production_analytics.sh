@@ -51,12 +51,14 @@ echo ""
 
 # Check nginx configuration
 echo "3. Checking nginx configuration..."
-if [ -f "/etc/nginx/sites-enabled/sydneyscheduler" ]; then
+if [ -f "/etc/nginx/sites-enabled/webscraper" ]; then
     echo "✅ Nginx config found"
     echo "Document root:"
-    grep "root" /etc/nginx/sites-enabled/sydneyscheduler | head -1
+    grep "root" /etc/nginx/sites-enabled/webscraper | head -1
 else
-    echo "❌ Nginx config not found"
+    echo "❌ Nginx config not found at /etc/nginx/sites-enabled/webscraper"
+    echo "Checking alternative locations..."
+    ls -la /etc/nginx/sites-enabled/ | grep -E "(webscraper|sydney)"
 fi
 
 echo ""
