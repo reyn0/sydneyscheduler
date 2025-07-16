@@ -1,53 +1,57 @@
-# Deployment Troubleshooting Guide
+# 🛠️ Production Troubleshooting Guide
 
-This guide provides step-by-step instructions for deploying and troubleshooting the Web Scraper application on a DigitalOcean VPS.
+Complete troubleshooting guide for the Sydney Scheduler web scraper application deployed on DigitalOcean VPS.
 
-## 🚀 Deployment Overview
+## 🚀 Production System Overview
 
-The application consists of:
-- **Backend**: FastAPI service running on port 8000 (webscraper.service)
+**Live Site**: https://sydneyscheduler.com/
+
+### System Components
+- **Backend**: FastAPI service on port 8000 (webscraper.service)
 - **Frontend**: React app served by Nginx on ports 80/443
 - **SSL**: Let's Encrypt certificates for HTTPS
-- **Reverse Proxy**: Nginx proxies API requests to the backend
+- **Automation**: Cron jobs for scraping (8am, 2pm, 6pm, 7pm daily)
+- **Analytics**: Google Analytics 4 with measurement ID G-DMDYBF56W7
 
-## 📁 File Structure on Server
-
+### File Structure on Server
 ```
 /srv/sydneyscheduler/
-├── frontend/build/          # React production build
-│   ├── index.html
-│   ├── static/
-│   └── ...
-├── backend/                 # FastAPI application
-│   ├── app/
-│   ├── latest_results.json
-│   └── ...
-└── ...
+├── frontend/
+│   ├── build/               # React production build (served by Nginx)
+│   ├── src/                 # Source code
+│   └── .env                 # Environment variables (GA ID)
+├── backend/
+│   ├── app/                 # FastAPI application
+│   └── latest_results.json  # Scraped data storage
+└── deployment-scripts/      # Automated tools
 
-/etc/nginx/sites-available/webscraper    # Nginx configuration
-/etc/nginx/sites-enabled/webscraper      # Symlink to enable site
-/etc/systemd/system/webscraper.service   # Backend service definition
-/etc/letsencrypt/live/[domain]/           # SSL certificates
+/etc/nginx/sites-enabled/webscraper    # Nginx configuration
+/etc/systemd/system/webscraper.service # Backend service
+/etc/letsencrypt/live/sydneyscheduler.com/ # SSL certificates
 ```
 
-## 🔧 Troubleshooting Scripts
+## 🔧 Quick Diagnostic Tools
 
-### 1. `final_verification.sh`
-**Purpose**: Comprehensive check of all deployment components
-**Use when**: Want to verify entire deployment status
+### Essential Scripts (All Working ✅)
 
 ```bash
-chmod +x final_verification.sh
-./final_verification.sh
-```
+# Make scripts executable
+chmod +x deployment-scripts/*.sh
 
-**Checks**:
-- Nginx service status and port listening
-- Backend service status and API response
-- SSL certificate validity
-- Frontend build files and permissions
-- Nginx configuration validity
-- Local and external connectivity
+# Complete system verification
+./deployment-scripts/verify_production_analytics.sh
+
+# Cron job monitoring and setup
+./deployment-scripts/monitor_cron.sh
+./deployment-scripts/setup_cron.sh
+
+# Manual scraping test
+./deployment-scripts/test_scraping.sh
+
+# SSL and network diagnostics
+./deployment-scripts/ssl_troubleshoot.sh
+./deployment-scripts/dns_firewall_check.sh
+```
 
 ### 2. `nginx_fix.sh`
 **Purpose**: Fix common Nginx configuration and permission issues
@@ -125,56 +129,140 @@ chmod +x dns_firewall_check.sh
 - Port connectivity
 - DigitalOcean firewall settings
 
-## 🛠️ Common Issues and Solutions
+## 🚨 Common Issues & Solutions
 
-### Issue 1: "Connection Refused" on HTTPS
-**Symptoms**: HTTPS returns connection refused error
-**Cause**: Nginx not listening on port 443
-**Solution**: 
+### 1. Google Analytics Not Working
+
+**Symptoms**: Console shows GA initialized but no data in dashboard
+
+**Diagnosis**:
 ```bash
-./nginx_fix.sh
-sudo nginx -t
+./deployment-scripts/verify_production_analytics.sh
+```
+
+**Solutions**:
+```bash
+# If GA ID missing from build files
+cd /srv/sydneyscheduler/frontend
+echo 'REACT_APP_GA_MEASUREMENT_ID=G-DMDYBF56W7' > .env
+REACT_APP_GA_MEASUREMENT_ID=G-DMDYBF56W7 npm run build
+
+# Deploy to nginx
+sudo cp -r build/* /var/www/html/
 sudo systemctl restart nginx
 ```
 
-### Issue 2: "Permission Denied" for Frontend Files
-**Symptoms**: Nginx logs show permission denied for index.html
-**Cause**: Wrong file ownership or incorrect path
-**Solution**:
+**Verification**:
+- Visit https://sydneyscheduler.com/
+- Console should show: `Google Analytics initialized with ID: G-DMDYBF56W7`
+- Check GA Real-Time dashboard: https://analytics.google.com/analytics/web/#/p417946779/realtime/overview
+
+### 2. Cron Jobs Not Running
+
+**Symptoms**: Roster data not updating automatically
+
+**Diagnosis**:
 ```bash
-sudo chown -R www-data:www-data /srv/sydneyscheduler/frontend/build/
-sudo chmod -R 755 /srv/sydneyscheduler/frontend/build/
+./deployment-scripts/monitor_cron.sh
+./deployment-scripts/debug_cron.sh
 ```
 
-### Issue 3: API Endpoints Return 502 Bad Gateway
-**Symptoms**: /results or /scrape endpoints return 502 error
-**Cause**: Backend service not running or wrong port
-**Solution**:
+**Solutions**:
 ```bash
-./webscraper_fix.sh
-sudo systemctl status webscraper
-sudo systemctl restart webscraper
+# Setup/fix cron jobs
+./deployment-scripts/setup_cron.sh
+
+# Manual test
+./deployment-scripts/test_scraping.sh
+
+# Check cron logs
+sudo tail -f /var/log/syslog | grep CRON
+tail -f /var/log/webscraper/cron.log
 ```
 
-### Issue 4: SSL Certificate Errors
-**Symptoms**: HTTPS shows certificate warnings or errors
-**Cause**: Certificate expired or not properly configured
-**Solution**:
+**Current Schedule**: Runs at 8:00 AM, 2:00 PM, 6:00 PM, 7:00 PM daily
+
+### 3. Backend Service Issues
+
+**Symptoms**: API not responding, 502 errors
+
+**Diagnosis**:
 ```bash
-./ssl_troubleshoot.sh
-sudo certbot renew --dry-run
-./ssl_setup.sh  # If certificate needs to be recreated
+sudo systemctl status webscraper.service
+sudo journalctl -u webscraper.service -n 20
+curl http://localhost:8000/results
 ```
 
-### Issue 5: Site Not Accessible Externally
-**Symptoms**: Works locally but not from internet
-**Cause**: DNS not pointing to server or firewall blocking access
-**Solution**:
+**Solutions**:
 ```bash
-./dns_firewall_check.sh
-# Update DNS A record to point to server IP
-sudo ufw allow 80
+# Restart backend service
+sudo systemctl restart webscraper.service
+
+# Fix service if broken
+./deployment-scripts/webscraper_fix.sh
+
+# Check dependencies
+cd /srv/sydneyscheduler/backend
+pip install -r requirements.txt
+```
+
+### 4. SSL Certificate Issues
+
+**Symptoms**: HTTPS not working, certificate warnings
+
+**Diagnosis**:
+```bash
+./deployment-scripts/ssl_troubleshoot.sh
+```
+
+**Solutions**:
+```bash
+# Renew SSL certificates
+sudo certbot renew
+
+# Fix SSL configuration
+./deployment-scripts/ssl_setup.sh
+
+# Check certificate status
+sudo certbot certificates
+```
+
+### 5. Nginx Configuration Issues
+
+**Symptoms**: Site not loading, 404 errors, wrong content
+
+**Diagnosis**:
+```bash
+sudo nginx -t
+sudo systemctl status nginx
+```
+
+**Solutions**:
+```bash
+# Fix nginx configuration
+./deployment-scripts/nginx_fix.sh
+
+# Restart nginx
+sudo systemctl restart nginx
+
+# Check configuration
+cat /etc/nginx/sites-enabled/webscraper
+```
+
+### 6. Port 443 (HTTPS) Issues
+
+**Symptoms**: Site only works on HTTP, not HTTPS
+
+**Solutions**:
+```bash
+./deployment-scripts/fix_port_443.sh
+
+# Check firewall
+sudo ufw status
 sudo ufw allow 443
+
+# Check port binding
+sudo netstat -tlnp | grep :443
 ```
 
 ## 📋 Manual Verification Steps
@@ -267,3 +355,120 @@ cat /srv/sydneyscheduler/backend/latest_results.json | jq .
 # Manually trigger scraping
 curl https://yourdomain.com/scrape
 ```
+
+## 📊 System Health Checks
+
+### Daily Monitoring
+```bash
+# Quick system status
+./deployment-scripts/monitor_cron.sh
+
+# Verify analytics working
+./deployment-scripts/verify_production_analytics.sh
+
+# Test scraping manually
+./deployment-scripts/test_scraping.sh
+```
+
+### Service Status Commands
+```bash
+# Check all services
+sudo systemctl status nginx webscraper.service cron
+
+# Check logs
+sudo journalctl -u webscraper.service -f
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/webscraper/cron.log
+```
+
+### Performance Monitoring
+```bash
+# Check disk usage
+df -h
+
+# Check memory usage
+free -h
+
+# Check process status
+ps aux | grep -E "(nginx|uvicorn|python)"
+
+# Check latest scraping results
+ls -la /srv/sydneyscheduler/backend/latest_results.json
+```
+
+## 🔍 Diagnostic Information
+
+### System Information
+- **OS**: Ubuntu 20.04+ LTS
+- **Web Server**: Nginx with reverse proxy
+- **Backend**: Python 3.8+ with FastAPI and Selenium
+- **Frontend**: React 18+ with Bootstrap 5
+- **SSL**: Let's Encrypt certificates
+- **Automation**: Systemd + Cron
+
+### Port Configuration
+- **80**: HTTP (redirects to HTTPS)
+- **443**: HTTPS (main site)
+- **8000**: Backend API (localhost only)
+- **22**: SSH access
+
+### Log Locations
+```bash
+# Application logs
+/var/log/webscraper/cron.log           # Cron job execution
+sudo journalctl -u webscraper.service  # Backend service logs
+
+# System logs
+/var/log/nginx/access.log              # Nginx access logs
+/var/log/nginx/error.log               # Nginx error logs
+/var/log/syslog                        # System logs (includes cron)
+```
+
+## 🎯 Success Indicators
+
+### Working System Shows:
+- ✅ https://sydneyscheduler.com/ loads correctly
+- ✅ Console shows: `Google Analytics initialized with ID: G-DMDYBF56W7`
+- ✅ GA Real-Time dashboard shows active users
+- ✅ Roster data updates automatically every 4-6 hours
+- ✅ Manual scraping works via "Update Now" button
+- ✅ SSL certificate valid and auto-renewing
+- ✅ All services running: `nginx`, `webscraper.service`, `cron`
+
+### Performance Benchmarks:
+- **Page load**: < 2 seconds
+- **API response**: < 500ms
+- **Scraping duration**: 30-60 seconds
+- **Data freshness**: Max 6 hours old
+
+## 📞 Emergency Recovery
+
+### Complete System Restart
+```bash
+# Restart all services
+sudo systemctl restart nginx webscraper.service cron
+
+# Rebuild frontend if needed
+cd /srv/sydneyscheduler/frontend
+npm run build
+sudo cp -r build/* /var/www/html/
+
+# Force SSL renewal if needed
+sudo certbot renew --force-renewal
+```
+
+### Backup and Recovery
+```bash
+# Backup scraped data
+cp /srv/sydneyscheduler/backend/latest_results.json ~/backup/
+
+# Backup nginx config
+cp /etc/nginx/sites-enabled/webscraper ~/backup/
+
+# Backup environment variables
+cp /srv/sydneyscheduler/frontend/.env ~/backup/
+```
+
+---
+
+**Last Updated**: January 2025 | **System Status**: ✅ Production Ready
