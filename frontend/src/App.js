@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import DataView from "./components/DataView";
 import ScrapeStarter from "./components/ScrapeStarter";
+import ThemeToggle from "./components/ThemeToggle";
 import { fetchScrapedData } from "./api";
 import { initGA, trackPageView, trackCoffeeClick, testAnalytics } from "./utils/analytics";
+import "./styles/enhanced-theme.css";
 
-// Simple Buy Me a Coffee Button Component
+// Enhanced Buy Me a Coffee Button Component
 function BuyMeACoffeeButton() {
   const handleClick = () => {
     trackCoffeeClick();
@@ -17,30 +19,9 @@ function BuyMeACoffeeButton() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '7px 15px',
-        backgroundColor: '#5F7FFF',
-        color: '#ffffff',
-        textDecoration: 'none',
-        borderRadius: '5px',
-        fontSize: '14px',
-        fontFamily: 'Lato, sans-serif',
-        fontWeight: '500',
-        border: '1px solid #000000',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseOver={(e) => {
-        e.target.style.backgroundColor = '#4a6bff';
-        e.target.style.transform = 'scale(1.05)';
-      }}
-      onMouseOut={(e) => {
-        e.target.style.backgroundColor = '#5F7FFF';
-        e.target.style.transform = 'scale(1)';
-      }}
+      className="coffee-button"
     >
-      <span style={{ marginRight: '8px' }}>☕</span>
+      <span>☕</span>
       Buy me a coffee
     </a>
   );
@@ -90,13 +71,14 @@ function App() {
     <Router>
       <Analytics />
       <div className="container mt-4">
-        {/* Header with title and coffee button */}
+        {/* Header with title, theme toggle, and coffee button */}
         <header className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
           <div>
             <h1 className="h3 mb-0" style={{ color: "#1976d2" }}>Sydney Roster Scheduler</h1>
             <small className="text-muted">Real-time roster aggregation from multiple venues</small>
           </div>
-          <div>
+          <div className="d-flex align-items-center">
+            <ThemeToggle />
             <BuyMeACoffeeButton />
           </div>
         </header>
